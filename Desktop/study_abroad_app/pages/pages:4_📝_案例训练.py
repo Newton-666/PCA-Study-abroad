@@ -91,6 +91,7 @@ with col_input:
     st.subheader("➕ 录入新案例")
     
     with st.form("case_form", clear_on_submit=True):
+        # 1. 基础信息 (新增国家和轮次)
         c1, c2, c3 = st.columns([3, 2, 2])
         with c1:
             school = st.text_input("学校名称 (英文)", placeholder="e.g. Hong Kong Polytechnic University")
@@ -99,6 +100,7 @@ with col_input:
         with c3:
             country = st.selectbox("申请国家/地区", ["美国", "英国", "加拿大", "澳洲", "中国香港", "其他"], index=4)
             
+        # 动态申请轮次选项
         round_options = ["Regular Decision (RD)"]
         if country == "美国":
             round_options = ["Early Decision (ED)", "Early Action (EA)", "Regular Decision (RD)", "Rolling"]
@@ -111,6 +113,7 @@ with col_input:
         
         st.divider()
         
+        # 2. 课程体系选择 (保持原有逻辑)
         st.markdown("### 🎓 成绩详情")
         curriculum = st.selectbox(
             "选择该学生的课程体系",
@@ -171,6 +174,7 @@ with col_input:
 
         st.divider()
         
+        # 3. 核心评分与结果
         c_ucs, c_res = st.columns([1, 2])
         with c_ucs:
             ucs = st.number_input("背景综合评分 (UCS)", min_value=0, max_value=100, step=1, help="去'智能分析'页查看该学生的 UCS 分数")
@@ -183,6 +187,7 @@ with col_input:
         
         if submitted:
             if school:
+                # ✅ 修复点：确保这里有 8 个参数，顺序正确
                 save_case(school, country, major, grades_dict, ucs, round_type, result, notes)
                 st.success(f"✅ 案例已保存！系统已记录 `{school}` ({country}-{round_type}) 的详细成绩。")
                 st.balloons()
